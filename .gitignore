@@ -4,3 +4,5 @@
 /storage/framework/views/*
 /storage/framework/testing/*
 /storage/logs/*
+.env
+/node_modules/*
