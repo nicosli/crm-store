@@ -23,3 +23,7 @@ Route::match(array('GET', 'POST'), '/project/update', function(){
 
 Auth::routes();
 Route::get('/Dashboard', 'ModulosController@dashboard')->name('Dashboard');
+Route::get('/logout', function(){
+    Auth::logout();
+    return redirect('/');
+});
