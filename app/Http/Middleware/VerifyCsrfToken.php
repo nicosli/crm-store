@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'https://api.bitbucket.org/*',
+        'https://bitbucket.org/+'
     ];
 }
