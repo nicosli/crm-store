@@ -12,9 +12,7 @@
 */
 
 Route::get('/', function () {
-    return response()->json([
-        'exitCode' => 1
-    ]);
+    return view('inicio');
 });
 Route::match(array('GET', 'POST'), '/project/update', function(){
     $exitCode = Artisan::call('repo:update');
