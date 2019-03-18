@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return response()->json([
-        'exitCode' => 0
+        'exitCode' => 1
     ]);
 });
 Route::match(array('GET', 'POST'), '/project/update', function(){
