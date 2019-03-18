@@ -21,3 +21,5 @@ Route::match(array('GET', 'POST'), '/project/update', function(){
     ]);
 });
 
+Auth::routes();
+Route::get('/Dashboard', 'ModulosController@dashboard')->name('Dashboard');
