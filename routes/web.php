@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('inicio');
 });
+Route::get('/project/update', function(){
+    $exitCode = Artisan::call('repo:update');
+    return $exitCode;
+});
