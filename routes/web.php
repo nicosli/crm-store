@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 Route::match(array('GET', 'POST'), '/project/update', function(){
     $exitCode = Artisan::call('repo:update');
-    return $exitCode;
+    return response()->json([
+        'exitCode' => $exitCode
+    ]);
 });
 
