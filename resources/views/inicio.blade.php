@@ -1,10 +1,4 @@
 @extends('template.base')
 @section('contenido')
-    <div class="flex-center position-ref full-height">
-        <div class="content">
-            <div class="title m-b-md">
-                Nicosli - Store
-            </div>
-        </div>
-    </div>
+<h1 class="display-4">nicosli.com</h1>
 @endsection
