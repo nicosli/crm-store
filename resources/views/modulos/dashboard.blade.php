@@ -1,2 +1,5 @@
-<div>Dashboard</div>
-<a href="{!! asset('/logout') !!}">Salir de nicosli-store</a>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">Dashboard</div>
+@endsection

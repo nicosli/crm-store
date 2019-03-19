@@ -14,9 +14,11 @@
         
     </head>
     <body>
-        <div class="container">
-        @yield('contenido')
+        <div id="app">
+            @include('template.menu')
+            <main class="py-4">
+                @yield('content')
+            </main>
         </div>
-        <div id="app"></div>
     </body>
 </html>
