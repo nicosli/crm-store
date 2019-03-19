@@ -16,7 +16,8 @@ mix.js('resources/js/app.js', 'public/js')
 
 mix.styles([
     'public/mixed/css/app.css',
-    'resources/css/app.css'
+    'resources/css/app.css',
+    'resources/css/menu.css'
 ], 'public/css/app.css', './');
 
 mix.browserSync({
