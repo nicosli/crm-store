@@ -12,7 +12,12 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+    .sass('resources/sass/app.scss', 'public/mixed/css/app.css');
+
+mix.styles([
+    'public/mixed/css/app.css',
+    'resources/css/app.css'
+], 'public/css/app.css', './');
 
 mix.browserSync({
     open: 'external',

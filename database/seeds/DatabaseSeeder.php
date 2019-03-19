@@ -178,7 +178,7 @@ class DatabaseSeeder extends Seeder
         }
 
         /*---- Ventas ----*/
-        foreach(range(1,5000) as $index){
+        foreach(range(1,1500) as $index){
             $clientes = DB::table('clientes')->get();
             $users = DB::table('users')->get();
             $metodospago = DB::table('metodospago')->get();

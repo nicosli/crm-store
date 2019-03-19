@@ -28,15 +28,15 @@ class Venta extends Model
     	return $total;
     }
     public static function jsonventas($todo){
-        $json = "";
+        $json = [];
+        //dd($todo);
         foreach ($todo as $key => $val) {
             //echo $val->total_venta."<br>";
             if(isset($json[$val->fecha_venta]))
-                $json[$val->fecha_venta] += $val->total_venta;
+                $json[$val->fecha_venta] += (float)$val->total_venta;
             else
-                $json[$val->fecha_venta] = $val->total_venta;
+                $json[$val->fecha_venta] = (float)$val->total_venta;
         }
-        //dd($json);
         return $json;
     }
 }

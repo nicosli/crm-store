@@ -18,13 +18,24 @@ Route::match(array('GET', 'POST'), '/project/update', function(){
     ]);
 });
     
+/**
+ |--------------------------------------------------------------------------
+ | Rutas del módulo
+ |--------------------------------------------------------------------------
+ */
 Auth::routes();
 
 Route::get('/', function () {
     return view('inicio');
 })->name('Inicio');
-Route::get('/Dashboard', 'ModulosController@dashboard')->name('Dashboard');
 Route::get('/logout', function(){
     Auth::logout();
     return redirect('/');
 });
+Route::get('/Dashboard', 'ModulosController@dashboard')->name('Dashboard');
+Route::get('/Catalogos', 'ModulosController@catalogos')->name('Catalogos');
+Route::get('/Proveedores', 'ModulosController@proveedores')->name('Proveedores');
+Route::get('/Usuarios', 'ModulosController@usuarios')->name('Usuarios');
+Route::get('/Clientes', 'ModulosController@clientes')->name('Clientes');
+Route::get('/Productos', 'ModulosController@productos')->name('Productos');
+Route::get('/PuntoDeVenta', 'ModulosController@puntoDeVenta')->name('PuntoDeVenta');
