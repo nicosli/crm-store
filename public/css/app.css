@@ -16425,7 +16425,9 @@ readers do not read off random characters that represent icons */
 }
 
 
-
+#app{
+    margin-left: 70px;
+}
 .main-menu .fa {
 position: relative;
 display: table-cell;

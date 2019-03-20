@@ -3,8 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Venta;
+use DB;
 use Request;
+use App\Http\Models\Colores;
+use App\Http\Models\Reservaciones;
+use App\Http\Models\Categoria;
+use App\Http\Models\Color;
+use App\Http\Models\Proveedor;
+use App\Http\Models\User;
+use App\Http\Models\Cliente;
+use App\Http\Models\Producto;
+use App\Http\Models\Talla;
+use App\Http\Models\Metodopago;
+use App\Http\Models\Venta;
 
 class ModulosController extends Controller
 {
@@ -19,28 +30,23 @@ class ModulosController extends Controller
     }
 
     public static function dashboard(){
-        $fhInicio 	= (Request::get('fhInicio')=="")? date('Y-m-01') : Request::get('fhInicio');
-		$fhFin 	= (Request::get('fhFin')=="")? date('Y-m-d') : Request::get('fhFin');
+        $totalPiezas = Producto::sum('existencia');
 		
 		$ventas 	= Venta::
-		whereBetween('fecha_venta', array($fhInicio, $fhFin))
+		whereBetween('fecha_venta', array(date('Y-m-01'), date('Y-m-d')))
 		->orderBy('fecha_venta', 'ASC')
-		->orderBy('hora_venta', 'ASC');
-		
-		$todo = $ventas->get();
-		$totalVenta = $todo->sum('total_venta');
-		$jsonventas = Venta::jsonventas($todo);
-		
-		$ventas = $ventas->paginate(10);
+		->orderBy('hora_venta', 'ASC')->get();
 
-		$ventas->setPath('/Reportes/Ventas?fhInicio='.$fhInicio."&fhFIn=".$fhFin);
+		$totalVenta = $ventas->sum('total_venta');
+		$jsonventas = Venta::jsonventas($ventas);
+
+		$ventas10 = Venta::orderBy('fecha_venta', 'DSC')->paginate(10);
 
 		return view('modulos.dashboard', array(
-			'ventas' 		=> $ventas,
-			'jsonventas' 	=> $jsonventas,
-			'totalVenta' 	=> $totalVenta,
-			'fhInicio'		=> $fhInicio,
-			'fhFin'			=> $fhFin
+			'totalPiezas' 				=> $totalPiezas,
+			'ventas'					=> $ventas10,
+			'jsonventas' 				=> $jsonventas,
+			'total_ventas_mes' 			=> $totalVenta
 		));
     }
 }
