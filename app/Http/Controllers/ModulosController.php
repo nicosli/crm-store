@@ -48,5 +48,9 @@ class ModulosController extends Controller
 			'jsonventas' 				=> $jsonventas,
 			'total_ventas_mes' 			=> $totalVenta
 		));
-    }
+	}
+	
+	public static function proveedores(){
+		return view('modulos.proveedores.lista');
+	}
 }

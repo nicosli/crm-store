@@ -33,7 +33,6 @@ Route::get('/logout', function(){
     return redirect('/');
 });
 Route::get('/Dashboard', 'ModulosController@dashboard')->name('Dashboard');
-Route::get('/Catalogos', 'ModulosController@catalogos')->name('Catalogos');
 Route::get('/Proveedores', 'ModulosController@proveedores')->name('Proveedores');
 Route::get('/Usuarios', 'ModulosController@usuarios')->name('Usuarios');
 Route::get('/Clientes', 'ModulosController@clientes')->name('Clientes');

@@ -1,3 +1,35 @@
+<nav class="main-menu">
+    <ul>
+        <li class="py-2">
+            <a href="{{ route('Dashboard') }}">
+                <i class="fa fa-home fa-2x"></i>
+                <span class="nav-text">
+                    Dashboard
+                </span>
+            </a>            
+        </li>
+        <div class="divider"></div>
+        <li>
+            <a href="{{ route('Proveedores') }}">
+                <i class="fa fa-shipping-fast fa-2x"></i>
+                <span class="nav-text">
+                    Proveedores
+                </span>
+            </a>            
+        </li>
+    </ul>
+
+    <ul class="logout">
+        <li>
+            <a href="{{ route('logout') }}">
+                    <i class="fa fa-power-off fa-2x"></i>
+                <span class="nav-text">
+                    Logout
+                </span>
+            </a>
+        </li>  
+    </ul>
+</nav>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Nekkyn Store</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,95 +54,4 @@
         </li>
     </ul>
   </div>
-</nav>
-<nav class="main-menu">
-    <ul>
-        <li>
-            <a href="http://justinfarrow.com">
-                <i class="fa fa-home fa-2x"></i>
-                <span class="nav-text">
-                    Dashboard
-                </span>
-            </a>
-            
-        </li>
-        <li class="has-subnav">
-            <a href="#">
-                <i class="fa fa-laptop fa-2x"></i>
-                <span class="nav-text">
-                    Stars Components
-                </span>
-            </a>
-            
-        </li>
-        <li class="has-subnav">
-            <a href="#">
-                <i class="fa fa-list fa-2x"></i>
-                <span class="nav-text">
-                    Forms
-                </span>
-            </a>
-            
-        </li>
-        <li class="has-subnav">
-            <a href="#">
-                <i class="fa fa-folder-open fa-2x"></i>
-                <span class="nav-text">
-                    Pages
-                </span>
-            </a>
-            
-        </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-bar-chart-o fa-2x"></i>
-                <span class="nav-text">
-                    Graphs and Statistics
-                </span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-font fa-2x"></i>
-                <span class="nav-text">
-                    Quotes
-                </span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-table fa-2x"></i>
-                <span class="nav-text">
-                    Tables
-                </span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-map-marker fa-2x"></i>
-                <span class="nav-text">
-                    Maps
-                </span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-info fa-2x"></i>
-                <span class="nav-text">
-                    Documentation
-                </span>
-            </a>
-        </li>
-    </ul>
-
-    <ul class="logout">
-        <li>
-            <a href="{{ route('logout') }}">
-                    <i class="fa fa-power-off fa-2x"></i>
-                <span class="nav-text">
-                    Logout
-                </span>
-            </a>
-        </li>  
-    </ul>
 </nav>
