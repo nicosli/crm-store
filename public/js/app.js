@@ -674,6 +674,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -717,49 +725,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.modalForm = true;
             this.addProveedor = Object.assign({}, row);
         },
-        onSubmitControll: function onSubmitControll() {
-            if (this.addProveedor.id == '') this.onSubmit();else this.onSubmitUpdate();
-        },
-        onSubmitUpdate: function onSubmitUpdate() {
+        deleteClick: function deleteClick(row) {
             var _this = this;
 
-            this.loadingModal = true;
-            this.$http.put('http://local.store.nicosli.com/api/proveedores', this.addProveedor, { emulateJSON: true }).then(function (_ref) {
-                var data = _ref.data;
-
-                _this.loadingModal = false;
-                if (data.error == false) {
-                    _this.loadTabla();
-                    _this.modalForm = false;
-                    _this.searchKeyword = _this.addProveedor.nombre;
-                    _this.$toast.open({
-                        message: 'El Proveedor se insertó correctamente',
-                        type: 'is-info',
-                        duration: 4000
-                    });
-                } else {
-                    _this.errores = data.message;
+            this.$dialog.confirm({
+                title: 'Eliminar Proveedor',
+                message: 'Estás seguro de eliminar al proveedor <b>' + row.nombre + '?</b>',
+                confirmText: 'Eliminar proveedor',
+                type: 'is-danger',
+                hasIcon: true,
+                onConfirm: function onConfirm() {
+                    return _this.deleteRow(row);
                 }
-            }).catch(function (error) {
-                _this.loading = false;
-                throw error;
             });
         },
-        onSubmit: function onSubmit() {
+        deleteRow: function deleteRow(row) {
             var _this2 = this;
 
+            this.$toast.open({
+                message: 'Eiminando proveedor...',
+                type: 'is-danger',
+                duration: 1000
+            });
             this.loadingModal = true;
-            this.$http.post('http://local.store.nicosli.com/api/proveedores', this.addProveedor, { emulateJSON: true }).then(function (_ref2) {
-                var data = _ref2.data;
+            this.$http.delete('http://local.store.nicosli.com/api/proveedores?id=' + row.id).then(function (_ref) {
+                var data = _ref.data;
 
                 _this2.loadingModal = false;
                 if (data.error == false) {
                     _this2.loadTabla();
-                    _this2.modalForm = false;
-                    _this2.searchKeyword = _this2.addProveedor.nombre;
                     _this2.$toast.open({
-                        message: 'El Proveedor se insertó correctamente',
-                        type: 'is-success'
+                        message: 'El Proveedor se eliminó correctamente',
+                        type: 'is-info',
+                        duration: 4000
                     });
                 } else {
                     _this2.errores = data.message;
@@ -769,20 +767,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 throw error;
             });
         },
-        loadTabla: function loadTabla() {
+        onSubmitControll: function onSubmitControll() {
+            if (this.addProveedor.id == '') this.onSubmit();else this.onSubmitUpdate();
+        },
+        onSubmitUpdate: function onSubmitUpdate() {
             var _this3 = this;
 
-            this.loading = true;
-            this.$http.get('http://local.store.nicosli.com/api/proveedores').then(function (_ref3) {
-                var data = _ref3.data;
+            this.loadingModal = true;
+            this.$http.put('http://local.store.nicosli.com/api/proveedores', this.addProveedor, { emulateJSON: true }).then(function (_ref2) {
+                var data = _ref2.data;
 
-                _this3.loading = false;
-                _this3.data = [];
-                data.results.forEach(function (item) {
-                    _this3.data.push(item);
-                });
+                _this3.loadingModal = false;
+                if (data.error == false) {
+                    _this3.loadTabla();
+                    _this3.modalForm = false;
+                    _this3.searchKeyword = _this3.addProveedor.nombre;
+                    _this3.$toast.open({
+                        message: 'El Proveedor se insertó correctamente',
+                        type: 'is-info',
+                        duration: 4000
+                    });
+                } else {
+                    _this3.errores = data.message;
+                }
             }).catch(function (error) {
                 _this3.loading = false;
+                throw error;
+            });
+        },
+        onSubmit: function onSubmit() {
+            var _this4 = this;
+
+            this.loadingModal = true;
+            this.$http.post('http://local.store.nicosli.com/api/proveedores', this.addProveedor, { emulateJSON: true }).then(function (_ref3) {
+                var data = _ref3.data;
+
+                _this4.loadingModal = false;
+                if (data.error == false) {
+                    _this4.loadTabla();
+                    _this4.modalForm = false;
+                    _this4.searchKeyword = _this4.addProveedor.nombre;
+                    _this4.$toast.open({
+                        message: 'El Proveedor se insertó correctamente',
+                        type: 'is-success'
+                    });
+                } else {
+                    _this4.errores = data.message;
+                }
+            }).catch(function (error) {
+                _this4.loading = false;
+                throw error;
+            });
+        },
+        loadTabla: function loadTabla() {
+            var _this5 = this;
+
+            this.loading = true;
+            this.$http.get('http://local.store.nicosli.com/api/proveedores').then(function (_ref4) {
+                var data = _ref4.data;
+
+                _this5.loading = false;
+                _this5.data = [];
+                data.results.forEach(function (item) {
+                    _this5.data.push(item);
+                });
+            }).catch(function (error) {
+                _this5.loading = false;
                 throw error;
             });
         },
@@ -790,12 +840,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         filteredData: function filteredData() {
-            var _this4 = this;
+            var _this6 = this;
 
             return this.data.filter(function (item) {
-                _this4.filtered = item.nombre.toLowerCase().includes(_this4.searchKeyword.toLowerCase());
+                _this6.filtered = item.nombre.toLowerCase().includes(_this6.searchKeyword.toLowerCase());
 
-                return _this4.filtered;
+                return _this6.filtered;
             });
         }
     },
@@ -803,6 +853,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         formatNumber: function formatNumber(value) {
             var val = (value / 1).toFixed(2).replace(',', '');
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        truncate: function truncate(value, length) {
+            return value.length > length ? value.substr(0, length) + '...' : value;
         }
     },
     mounted: function mounted() {
@@ -930,6 +983,24 @@ var render = function() {
                         "b-table-column",
                         {
                           attrs: {
+                            field: "representante",
+                            label: "Representante",
+                            sortable: ""
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(props.row.representante) +
+                              "\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-table-column",
+                        {
+                          attrs: {
                             field: "telefono",
                             label: "Telefono",
                             sortable: ""
@@ -964,25 +1035,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "b-table-column",
-                        {
-                          attrs: {
-                            field: "direccion",
-                            label: "Dirección",
-                            sortable: ""
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(props.row.direccion) +
-                              "\n                    "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-table-column",
-                        { attrs: { field: "direccion", label: "Dirección" } },
+                        { attrs: { field: "", label: "" } },
                         [
                           _c(
                             "b-button",
@@ -1001,6 +1054,34 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n                            Editar\n                        "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-table-column",
+                        { attrs: { field: "", label: "" } },
+                        [
+                          _c(
+                            "b-button",
+                            {
+                              attrs: {
+                                type: "is-danger",
+                                "icon-pack": "far",
+                                "icon-left": "trash-alt"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteClick(props.row)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Eliminar\n                        "
                               )
                             ]
                           )

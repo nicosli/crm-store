@@ -19,4 +19,5 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/proveedores', 'API\proveedoresController@getProveedores');
     Route::post('/proveedores', 'API\proveedoresController@setProveedor');
     Route::put('/proveedores', 'API\proveedoresController@updateProveedor');
+    Route::delete('/proveedores', 'API\proveedoresController@deleteProveedor');
 });

@@ -13,6 +13,29 @@ class proveedoresController extends Controller
 {
     public $successStatus = 200;
 
+    public static function deleteProveedor(Request $request){
+        $rules = [ 
+            'id' => 'required|integer|min:1'
+        ];
+        
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes()) {
+            $prov = Proveedor::find($request->all()['id']);
+            $prov->estado = 0;
+            $prov->save();
+            return response()->json([ 
+                "error" => false, 
+                "result" => ''
+            ]); 
+        } else { 
+            return response()->json([ 
+                "error" => true, 
+                "message" => $validator->errors()->all() 
+            ]); 
+        } 
+    }
+
     public static function updateProveedor(Request $request){
         $rules = [ 
             'nombre' => 'required|min:5|string',
@@ -34,7 +57,7 @@ class proveedoresController extends Controller
             $prov->save();
             return response()->json([ 
                 "error" => false, 
-                "result" => $request->all()
+                "result" => ''
             ]); 
         } else { 
             return response()->json([ 

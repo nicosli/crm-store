@@ -49,21 +49,29 @@
                     <b-table-column field="nombre" label="Nombre" sortable>
                             {{ props.row.nombre }}
                     </b-table-column>
+                    <b-table-column field="representante" label="Representante" sortable>
+                            {{ props.row.representante }}
+                    </b-table-column>
                     <b-table-column field="telefono" label="Telefono" sortable>
                             {{ props.row.telefono }}
                     </b-table-column>
                     <b-table-column field="email" label="Email" sortable>
                             {{ props.row.email }}
                     </b-table-column>
-                    <b-table-column field="direccion" label="Dirección" sortable>
-                            {{ props.row.direccion }}
-                    </b-table-column>
-                    <b-table-column field="direccion" label="Dirección">
+                    <b-table-column field="" label="">
                         <b-button type="is-info"
                             @click="editClick(props.row)"
                             icon-pack="far"
                             icon-left="edit">
                             Editar
+                        </b-button>
+                    </b-table-column>
+                    <b-table-column field="" label="">
+                        <b-button type="is-danger"
+                            @click="deleteClick(props.row)"
+                            icon-pack="far"
+                            icon-left="trash-alt">
+                            Eliminar
                         </b-button>
                     </b-table-column>
                 </template>
@@ -190,6 +198,44 @@
                 this.modalForm = true
                 this.addProveedor = Object.assign({}, row)
             },
+            deleteClick(row){
+                this.$dialog.confirm({
+                    title: 'Eliminar Proveedor',
+                    message: 'Estás seguro de eliminar al proveedor <b>'+row.nombre+'?</b>',
+                    confirmText: 'Eliminar proveedor',
+                    type: 'is-danger',
+                    hasIcon: true,
+                    onConfirm: () => this.deleteRow(row)
+                })
+            },
+            deleteRow(row){
+                this.$toast.open({
+                    message: 'Eiminando proveedor...',
+                    type: 'is-danger',
+                    duration: 1000
+                })
+                this.loadingModal = true
+                this.$http.delete(
+                    `http://local.store.nicosli.com/api/proveedores?id=`+row.id,
+                )
+				.then(( {data} ) => {
+					this.loadingModal = false
+                    if(data.error == false){
+                        this.loadTabla()
+                        this.$toast.open({
+                            message: 'El Proveedor se eliminó correctamente',
+                            type: 'is-info',
+                            duration: 4000
+                        })
+                    } else {
+                        this.errores = data.message
+                    }
+				})
+				.catch((error) => {
+					this.loading = false
+					throw error
+				})
+            },
             onSubmitControll(){
                 if(this.addProveedor.id == '')
                     this.onSubmit()
@@ -281,7 +327,12 @@
             formatNumber(value){
                 let val = (value/1).toFixed(2).replace(',', '')
                 return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
+            },
+            truncate(value, length) { 
+                return value.length > length 
+                    ? value.substr(0, length) + '...' 
+                    : value 
+            },
         },
         mounted() {
             this.loadTabla()
