@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+let mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,18 +11,16 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/mixed/css/app.css');
+mix.js('resources/assets/js/app.js', 'public/js').extract(['vue','buefy']);
+mix.sass('resources/assets/sass/app.scss', 'public/css');
 
-mix.styles([
-    'public/mixed/css/app.css',
-    'resources/css/app.css',
-    'resources/css/menu.css'
-], 'public/css/app.css', './');
+mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts');
 
 mix.browserSync({
-    open: 'external',
-    host: 'local.nicosli.com',
-    proxy: 'local.nicosli.com',
-    port: 8585
+   open: 'external',
+   host: 'local.store.nicosli.com',
+   proxy: 'local.store.nicosli.com',
+   port: 8585
 });
+
+mix.disableNotifications();

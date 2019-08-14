@@ -16,13 +16,11 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         DB::table('users')->insert([
-            'name'     => 'Nicolas Navarrete',
+            'name'     => 'Nicolas',
+            'last_name'     => 'Navarrete',
+            'mobile'    => '9993900074',
+            'id_rol'    => 1,
             'email'    => 'nnavarrete@nicosli.com',
-            'password' => bcrypt('ok00'),
-        ]);
-        DB::table('users')->insert([
-            'name'     => 'Yasury Navarrete',
-            'email'    => 'enavarrete@nicosli.com',
             'password' => bcrypt('ok00'),
         ]);
 
@@ -30,22 +28,22 @@ class DatabaseSeeder extends Seeder
         DB::table('categorias')->insert([
             'estado'       => 1,
             'nombre'       => 'Damas',
-            'descripcion'  => 'Categoría para la ropa de Damas'
+            'descripcion'  => 'CategorÃ­a para la ropa de Damas'
         ]);
         DB::table('categorias')->insert([
             'estado'       => 1,
             'nombre'       => 'Caballeros',
-            'descripcion'  => 'Categoría para la ropa de Caballeros'
+            'descripcion'  => 'CategorÃ­a para la ropa de Caballeros'
         ]);
         DB::table('categorias')->insert([
             'estado'       => 1,
-            'nombre'       => 'Niños',
-            'descripcion'  => 'Categoría para la ropa de Niños'
+            'nombre'       => 'NiÃ±os',
+            'descripcion'  => 'CategorÃ­a para la ropa de NiÃ±os'
         ]);
         DB::table('categorias')->insert([
             'estado'       => 1,
-            'nombre'       => 'Niñas',
-            'descripcion'  => 'Categoría para la ropa de Niñas'
+            'nombre'       => 'NiÃ±as',
+            'descripcion'  => 'CategorÃ­a para la ropa de NiÃ±as'
         ]);
 
         /*---- Colores ----*/
@@ -82,7 +80,7 @@ class DatabaseSeeder extends Seeder
 
         $faker = Faker::create();
 
-        /*---- Métodos de Pago ----*/
+        /*---- MÃ©todos de Pago ----*/
         DB::table('metodospago')->insert([
             'estado'        => 1,
             'nombre'        => 'Terminal Bancomer',
@@ -91,7 +89,7 @@ class DatabaseSeeder extends Seeder
         DB::table('metodospago')->insert([
             'estado'        => 1,
             'nombre'        => 'Efectivo',
-            'descripcion'   => 'Esta opción son para pagos con efectivo'
+            'descripcion'   => 'Esta opciÃ³n son para pagos con efectivo'
         ]);
 
         /*---- Proveedores ----*/
@@ -148,15 +146,15 @@ class DatabaseSeeder extends Seeder
             "Huayma Matizado",
             "Blusa Frida",
             "Vestido Georgina",
-            "Blusa Araña",
+            "Blusa AraÃ±a",
             "Guayabera combinada de Dama",
             "Blusa Mestiza",
             "Blusa bolitas",
             "Blusa tekit",
             "Blusa espiga",
             "Blusa Citilcum",
-            "Guayabera Niño",
-            "Pantalón"
+            "Guayabera NiÃ±o",
+            "PantalÃ³n"
         );
 
         foreach(range(0,count($productos)-1) as $index){

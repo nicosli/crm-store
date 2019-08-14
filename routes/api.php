@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', 'API\UserController@login');
+
+Route::group(['middleware' => 'auth:api'], function(){
+    Route::get('/proveedores', 'API\proveedoresController@getProveedores');
+    Route::post('/proveedores', 'API\proveedoresController@setProveedor');
+    Route::put('/proveedores', 'API\proveedoresController@updateProveedor');
 });
