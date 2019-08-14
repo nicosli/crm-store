@@ -83,6 +83,7 @@
                 <b-field label="Nombre">
                     <b-input 
                         required
+                        :disabled="loadingModal"
                         minlength="5"
                         icon="shipping-fast"
                         icon-pack="fas"
@@ -93,6 +94,7 @@
                 <b-field label="Representante">
                     <b-input 
                         required
+                        :disabled="loadingModal"
                         minlength="5"
                         icon="id-card-alt"
                         icon-pack="fas"
@@ -103,6 +105,7 @@
                 <b-field label="Teléfono">
                     <b-input 
                         required
+                        :disabled="loadingModal"
                         type="number"
                         icon="phone"
                         icon-pack="fas"
@@ -113,6 +116,7 @@
                 <b-field label="Email">
                     <b-input 
                         required
+                        :disabled="loadingModal"
                         type="email"
                         icon="envelope"
                         icon-pack="fas"
@@ -123,6 +127,7 @@
                 <b-field label="Dirección">
                     <b-input
                         required
+                        :disabled="loadingModal"
                         type="textarea" 
                         minlength="10"
                         maxlength="150"
@@ -206,7 +211,8 @@
                         this.searchKeyword = this.addProveedor.nombre
                         this.$toast.open({
                             message: 'El Proveedor se insertó correctamente',
-                            type: 'is-success'
+                            type: 'is-info',
+                            duration: 4000
                         })
                     } else {
                         this.errores = data.message

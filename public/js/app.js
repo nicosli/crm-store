@@ -669,6 +669,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -729,7 +734,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.searchKeyword = _this.addProveedor.nombre;
                     _this.$toast.open({
                         message: 'El Proveedor se insertó correctamente',
-                        type: 'is-success'
+                        type: 'is-info',
+                        duration: 4000
                     });
                 } else {
                     _this.errores = data.message;
@@ -1076,6 +1082,7 @@ var render = function() {
                           _c("b-input", {
                             attrs: {
                               required: "",
+                              disabled: _vm.loadingModal,
                               minlength: "5",
                               icon: "shipping-fast",
                               "icon-pack": "fas",
@@ -1100,6 +1107,7 @@ var render = function() {
                           _c("b-input", {
                             attrs: {
                               required: "",
+                              disabled: _vm.loadingModal,
                               minlength: "5",
                               icon: "id-card-alt",
                               "icon-pack": "fas",
@@ -1124,6 +1132,7 @@ var render = function() {
                           _c("b-input", {
                             attrs: {
                               required: "",
+                              disabled: _vm.loadingModal,
                               type: "number",
                               icon: "phone",
                               "icon-pack": "fas",
@@ -1148,6 +1157,7 @@ var render = function() {
                           _c("b-input", {
                             attrs: {
                               required: "",
+                              disabled: _vm.loadingModal,
                               type: "email",
                               icon: "envelope",
                               "icon-pack": "fas",
@@ -1172,6 +1182,7 @@ var render = function() {
                           _c("b-input", {
                             attrs: {
                               required: "",
+                              disabled: _vm.loadingModal,
                               type: "textarea",
                               minlength: "10",
                               maxlength: "150"
