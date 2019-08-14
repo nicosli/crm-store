@@ -21,9 +21,8 @@ class proveedoresController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->passes()) {
-            $prov = Proveedor::find($request->all()['id']);
-            $prov->estado = 0;
-            $prov->save();
+            Proveedor::find($request->all()['id'])->delete();
+            
             return response()->json([ 
                 "error" => false, 
                 "result" => ''
@@ -68,7 +67,7 @@ class proveedoresController extends Controller
     }
 
     public static function getProveedores(){
-        $proveedores = Proveedor::where('estado', 1)->get();
+        $proveedores = Proveedor::all();
         return response()->json([
             'error' => false,
             'results' => $proveedores

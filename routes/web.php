@@ -25,4 +25,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/lista/proveedores', function(){
         return view('modulos.listas.proveedores');
     });
+    Route::get('/lista/productos', function(){
+        return view('modulos.listas.productos');
+    });
 });

@@ -20,8 +20,8 @@ class CreateProveedoresTable extends Migration
             $table->char('telefono', 150);
             $table->string('email');
             $table->string('direccion');
-            $table->integer('estado');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use App\Http\Models\Producto;
 use App\Http\Models\Venta;
+use App\Http\Models\Talla;
 
 class DatabaseSeeder extends Seeder
 {
@@ -95,7 +96,6 @@ class DatabaseSeeder extends Seeder
         /*---- Proveedores ----*/
         foreach(range(1,10) as $index){
             DB::table('proveedores')->insert([
-                'estado'            => 1,
                 'nombre'            => $faker->company,
                 'representante'     => $faker->name,
                 'telefono'          => $faker->phoneNumber,
@@ -160,23 +160,30 @@ class DatabaseSeeder extends Seeder
         foreach(range(0,count($productos)-1) as $index){
             $costo = rand(150, 500);
             $precio_publico = $costo * 2;
+
             DB::table('productos')->insert([
-                'estado'            => 1,
                 'nombre'            => $productos[$index],
                 'categoria_id'      => $categorias[rand(0, count($categorias)-1)]->id,
-                'color_id'          => $colores[rand(0, count($colores)-1)]->id,
                 'proveedor_id'      => $proveedores[rand(0, count($proveedores)-1)]->id,
-                'talla_id'          => $tallas[rand(0, count($tallas)-1)]->id,
-                'existencia'        => rand(20, 50),
                 'costo'             => $costo,
                 'precio_publico'    => $precio_publico,
-                'descripcion'       => $faker->paragraph(1, true),
-                'barcode'           => $faker->ean13
+                'descripcion'       => $faker->paragraph(1, true)
             ]);
+            $producto_id = DB::getPdo()->lastInsertId();
+            $tallas = Talla::all();
+            foreach($tallas as $talla => $key){
+                DB::table('piezas')->insert([
+                    'producto_id' => $producto_id,
+                    'color_id' => $colores[rand(0, count($colores)-1)]->id,
+                    'talla_id' => $key->id,
+                    'existencia' => rand(20, 50),
+                    'barcode' => $faker->ean13
+                ]);
+            }
         }
 
         /*---- Ventas ----*/
-        foreach(range(1,1500) as $index){
+        /*foreach(range(1,1500) as $index){
             $clientes = DB::table('clientes')->get();
             $users = DB::table('users')->get();
             $metodospago = DB::table('metodospago')->get();
@@ -190,17 +197,23 @@ class DatabaseSeeder extends Seeder
             ]);
             $id_venta = DB::getPdo()->lastInsertId();
             $maxItems = rand(2,8);
-            $productos = Producto::all();
+            $productos = Producto::with([
+                'piezas'
+            ])->get();
+
             foreach(range(1, $maxItems) as $ind){
                 $item = rand(0, count($productos)-1);
+                $talla_id = $productos[$item]->piezas[rand(0, count($productos[$item]->piezas-1))]->talla_id;
+                $color_id = $productos[$item]->piezas[rand(0, count($productos[$item]->piezas-1))]->color_id;
+                $barcode = $productos[$item]->piezas[rand(0, count($productos[$item]->piezas-1))]->barcode;
                 DB::table('listaventas')->insert([
-                    'barcode' => $productos[$item]->barcode,
+                    'barcode' => $barcode,
                     'nombre' => $productos[$item]->nombre,
-                    'talla' => $productos[$item]->talla['nombre'],
+                    'talla' => $talla_id,
                     'venta_id' => $id_venta,
                     'proveedor_id' => $productos[$item]->proveedor['id'],
                     'categoria_id' => $productos[$item]->categoria['id'],
-                    'color_id' => $productos[$item]->color['id'],
+                    'color_id' => $color_id,
                     'monto' => $productos[$item]->precio_publico
                 ]);
             }
@@ -210,7 +223,7 @@ class DatabaseSeeder extends Seeder
             $total = $val->items->sum('monto');            
             $val->total_venta = $total;
             $val->save();
-        }
+        }*/
         
     }
 }

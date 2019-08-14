@@ -36,6 +36,7 @@
                         </a>
                     </div>
                 </div>
+                <a class="navbar-item" href="{{asset('/lista/productos')}}">Almacén</a>
             </div>
             @endif
 

@@ -20,4 +20,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/proveedores', 'API\proveedoresController@setProveedor');
     Route::put('/proveedores', 'API\proveedoresController@updateProveedor');
     Route::delete('/proveedores', 'API\proveedoresController@deleteProveedor');
+
+    Route::get('/productos', 'API\productosController@getproductos');
+    Route::post('/productos', 'API\productosController@setProducto');
+    Route::put('/productos', 'API\productosController@updateProducto');
+    Route::delete('/productos', 'API\productosController@deleteProducto');
 });

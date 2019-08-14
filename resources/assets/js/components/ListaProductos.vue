@@ -3,20 +3,20 @@
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/home">Home</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Lista Proveedores</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Lista Productos</a></li>
         </ul>
     </nav>
     <div class="card">
         <div class="card-content">
             <article class="message is-info">
-                <div class="message-body">Tabla de <strong>Proveedores</strong>.
-                    Este módulo muestra una lista completa de todas los proveedores
+                <div class="message-body">Tabla de <strong>Productos</strong>.
+                    Este módulo muestra una lista completa de todas los productos
                     que están dados de alta en el sistema
                 </div>
             </article>
             <div class="columns">
                 <div class="column is-9-widescreen">
-                    <h3 class="subtitle m-t-sm">Lista de Proveedores</h3>
+                    <h3 class="subtitle m-t-sm">Lista de productos</h3>
                 </div>
                 <div class="column is-3-widescreen">
                     <b-input 
@@ -47,16 +47,19 @@
                 :focusable=true>
                 <template slot-scope="props">
                     <b-table-column field="nombre" label="Nombre" sortable>
-                            {{ props.row.nombre }}
+                        {{ props.row.nombre }}
                     </b-table-column>
-                    <b-table-column field="representante" label="Representante" sortable>
-                            {{ props.row.representante }}
+                    <b-table-column field="descripcion" label="Descripción" sortable>
+                        {{ props.row.descripcion | truncate(15) }}
                     </b-table-column>
-                    <b-table-column field="telefono" label="Telefono" sortable>
-                            {{ props.row.telefono }}
+                    <b-table-column field="costo" label="Costo" sortable>
+                        {{ props.row.costo | formatNumber() }}
                     </b-table-column>
-                    <b-table-column field="email" label="Email" sortable>
-                            {{ props.row.email }}
+                    <b-table-column field="precio_publico" label="Precio Público" sortable>
+                        {{ props.row.precio_publico | formatNumber() }}
+                    </b-table-column>
+                    <b-table-column field="existencia" label="Existencia" sortable>
+                        {{ props.row.existencia }}
                     </b-table-column>
                     <b-table-column field="" label="">
                         <b-button type="is-info"
@@ -81,7 +84,7 @@
     <b-modal :active.sync="modalForm" @close="closeModal()">
         <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
-                <p class="modal-card-title">Guardar nuevo Proveedor</p>
+                <p class="modal-card-title">Guardar nuevo Producto</p>
             </header>
             <form v-on:submit.prevent="onSubmitControll">
             <section class="modal-card-body">
@@ -95,51 +98,72 @@
                         minlength="5"
                         icon="shipping-fast"
                         icon-pack="fas"
-                        placeholder="Nombre del proveedor"
-                        v-model="addProveedor.nombre">
+                        placeholder="Nombre del producto"
+                        v-model="addProducto.nombre">
                     </b-input>
                 </b-field>
-                <b-field label="Representante">
-                    <b-input 
-                        required
-                        :disabled="loadingModal"
-                        minlength="5"
-                        icon="id-card-alt"
-                        icon-pack="fas"
-                        placeholder="Nombre del contacto (proveedor)"
-                        v-model="addProveedor.representante">
-                    </b-input>
-                </b-field>
-                <b-field label="Teléfono">
+                <b-field label="Costo">
                     <b-input 
                         required
                         :disabled="loadingModal"
                         type="number"
                         icon="phone"
                         icon-pack="fas"
-                        placeholder="Teléfono"
-                        v-model="addProveedor.telefono">
+                        placeholder="Costo neto"
+                        v-model="addProducto.costo">
                     </b-input>
                 </b-field>
-                <b-field label="Email">
+                <b-field label="Precio Público">
                     <b-input 
                         required
                         :disabled="loadingModal"
-                        type="email"
-                        icon="envelope"
+                        type="number"
+                        icon="phone"
                         icon-pack="fas"
-                        placeholder="Email"
-                        v-model="addProveedor.email">
+                        placeholder="Precio Público"
+                        v-model="addProducto.precio_publico">
                     </b-input>
                 </b-field>
-                <b-field label="Dirección">
+                <div class="columns">
+                    <div class="column">
+                        <b-field label="Categoria">
+                            <b-select 
+                                expanded
+                                v-model="addProducto.categoria_id"
+                                placeholder="Selecciona una categoría">
+                                <option
+                                    v-for="categoria in categorias"
+                                    :value="categoria.id"
+                                    :key="categoria.id">
+                                    {{ categoria.nombre }}
+                                </option>
+                            </b-select>
+                        </b-field>
+                    </div>
+                    <div class="column">
+                        <b-field label="Proveedor">
+                            <b-select 
+                                expanded
+                                v-model="addProducto.proveedor_id"
+                                placeholder="Selecciona un proveedor">
+                                <option
+                                    v-for="proveedor in proveedores"
+                                    :value="proveedor.id"
+                                    :key="proveedor.id">
+                                    {{ proveedor.nombre }}
+                                </option>
+                            </b-select>
+                        </b-field>
+                    </div>
+                </div>
+                <b-field label="Descripcción">
                     <b-input
                         required
                         :disabled="loadingModal"
                         type="textarea" 
                         minlength="10"
                         maxlength="150"
-                        v-model="addProveedor.direccion">
+                        v-model="addProducto.descripcion">
                     </b-input>
                 </b-field>
             </section>
@@ -170,39 +194,48 @@
                 searchKeyword: '',
 				perPage: 5,
                 modalForm: false,
-                addProveedor: {
+                addProducto: {
                     id: '',
                     nombre: '',
-                    representante: '',
-                    telefono: '',
-                    email: '',
-                    direccion: ''
+                    costo: '',
+                    precio_publico: '',
+                    descripcion: '',
+                    categoria_id: '',
+                    proveedor_id: ''
                 },
                 loadingModal: false,
-                errores: []
+                errores: [],
+                categorias: [],
+                colores: [],
+                proveedores: [],
+                tallas: []
             }
         },
         methods: {
             nuevoClick(){
                 this.modalForm = true
-                this.addProveedor.nombre = ''
-                this.addProveedor.representante = ''
-                this.addProveedor.telefono = ''
-                this.addProveedor.email = ''
-                this.addProveedor.direccion = ''
-                this.addProveedor.id = ''
+                this.addProducto.nombre = ''
+                this.addProducto.costo = ''
+                this.addProducto.precio_publico = ''
+                this.addProducto.descripcion = ''
+                this.addProducto.categoria_id = ''
+                this.addProducto.proveedor_id = ''
+                this.addProducto.id = ''
                 this.errores = []
             },
             editClick(row){
                 this.errores = []
                 this.modalForm = true
-                this.addProveedor = Object.assign({}, row)
+                this.addProducto = Object.assign({}, row)
             },
             deleteClick(row){
+                let message = 'Estás seguro de eliminar el producto '
+                            + '<b>'+row.nombre+'?</b>, se eliminará todos'
+                            + ' los productos registrados con este proveedor'
                 this.$dialog.confirm({
-                    title: 'Eliminar Proveedor',
-                    message: 'Estás seguro de eliminar al proveedor <b>'+row.nombre+'?</b>',
-                    confirmText: 'Eliminar proveedor',
+                    title: 'Eliminar Producto',
+                    message: message,
+                    confirmText: 'Eliminar producto',
                     type: 'is-danger',
                     hasIcon: true,
                     onConfirm: () => this.deleteRow(row)
@@ -210,20 +243,21 @@
             },
             deleteRow(row){
                 this.$toast.open({
-                    message: 'Eiminando proveedor...',
+                    message: 'Eiminando producto...',
                     type: 'is-danger',
                     duration: 1000
                 })
                 this.loadingModal = true
                 this.$http.delete(
-                    `http://local.store.nicosli.com/api/proveedores?id=`+row.id,
+                    `http://local.store.nicosli.com/api/productos?id=`+row.id,
                 )
 				.then(( {data} ) => {
 					this.loadingModal = false
                     if(data.error == false){
+                        this.searchKeyword = ''
                         this.loadTabla()
                         this.$toast.open({
-                            message: 'El Proveedor se eliminó correctamente',
+                            message: 'El producto se eliminó correctamente',
                             type: 'is-info',
                             duration: 4000
                         })
@@ -237,7 +271,7 @@
 				})
             },
             onSubmitControll(){
-                if(this.addProveedor.id == '')
+                if(this.addProducto.id == '')
                     this.onSubmit()
                 else
                     this.onSubmitUpdate()
@@ -245,8 +279,8 @@
             onSubmitUpdate(){
                 this.loadingModal = true
                 this.$http.put(
-                    `http://local.store.nicosli.com/api/proveedores`, 
-                    this.addProveedor, 
+                    `http://local.store.nicosli.com/api/productos`, 
+                    this.addProducto, 
                     {emulateJSON:true}
                 )
 				.then(( {data} ) => {
@@ -254,9 +288,9 @@
                     if(data.error == false){
                         this.loadTabla()
                         this.modalForm = false
-                        this.searchKeyword = this.addProveedor.nombre
+                        this.searchKeyword = this.addProducto.nombre
                         this.$toast.open({
-                            message: 'El Proveedor se actualizó correctamente',
+                            message: 'El producto se actulizó correctamente',
                             type: 'is-info',
                             duration: 4000
                         })
@@ -272,8 +306,8 @@
             onSubmit(){
                 this.loadingModal = true
                 this.$http.post(
-                    `http://local.store.nicosli.com/api/proveedores`, 
-                    this.addProveedor, 
+                    `http://local.store.nicosli.com/api/productos`, 
+                    this.addProducto, 
                     {emulateJSON:true}
                 )
 				.then(( {data} ) => {
@@ -281,9 +315,9 @@
                     if(data.error == false){
                         this.loadTabla()
                         this.modalForm = false
-                        this.searchKeyword = this.addProveedor.nombre
+                        this.searchKeyword = this.addProducto.nombre
                         this.$toast.open({
-                            message: 'El Proveedor se insertó correctamente',
+                            message: 'El Producto se insertó correctamente',
                             type: 'is-success'
                         })
                     } else {
@@ -297,13 +331,17 @@
             },
             loadTabla() {
                 this.loading = true
-                this.$http.get(`http://local.store.nicosli.com/api/proveedores`)
+                this.$http.get(`http://local.store.nicosli.com/api/productos`)
 				.then(( {data} ) => {
 					this.loading = false
                     this.data = []
                     data.results.forEach((item) => {
 						this.data.push(item)
                     })
+                    this.categorias = data.categorias
+                    this.colores = data.colores
+                    this.proveedores = data.proveedores
+                    this.tallas = data.tallas
 				})
 				.catch((error) => {
 					this.loading = false
