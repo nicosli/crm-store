@@ -25,7 +25,7 @@ class puntoVentaController extends Controller
                 'color',
                 'talla',
                 'producto'
-            ])->where('barcode', $barcode)->first();
+            ])->where('barcode', $barcode)->firstOrFail();
             
             return response()->json([ 
                 "error" => false, 

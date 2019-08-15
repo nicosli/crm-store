@@ -106,7 +106,7 @@
             },
             searchProduct(){
                 this.loading = true
-                this.$http.get(`http://local.store.nicosli.com/api/piezas/`+this.barcode)
+                this.$http.get(`http://local.store.nicosli.com/api/piezas/buscar/`+this.barcode)
 				.then(( {data} ) => {
 					this.loading = false
                     if(data.error == false){

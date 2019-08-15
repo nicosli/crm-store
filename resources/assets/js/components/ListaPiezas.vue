@@ -63,7 +63,14 @@
                             {{ props.row.existencia }}
                         </label>
                     </b-table-column>
-                    
+                    <b-table-column field="imprimir" label="imprimir" sortable>
+                        <b-button 
+                            @click="dialogImprimir(props.row)"
+                            type="is-primary" 
+                            outlined>
+                            Imprimir
+                        </b-button>
+                    </b-table-column>
                     <b-table-column field="" label="">
                         <b-button type="is-info"
                             @click="editClick(props.row)"
@@ -150,11 +157,24 @@
             </form>
         </div>
     </b-modal>
+    <div ref="etiquetas" style="display:none">
+        <div v-for="etiqueta in rowPdf">
+            {{etiqueta.producto.nombre | truncate(20)}}<br>Talla 
+            {{etiqueta.talla.nombre}}<br>Precio 
+            $ MXN {{etiqueta.producto.precio_publico | formatNumber()}}<br>
+            <barcode style="width:46px" 
+                tag="img" 
+                :value="etiqueta.barcode" 
+                :options="barcodeOptions">
+            </barcode>
+        </div>
+    </div>
 </div>    
 </template>
 
 <script>
-
+    import jsPDF from 'jspdf'
+    import VueBarcode from '@chenfengyuan/vue-barcode';
     export default {
         data() {
             return {
@@ -174,10 +194,67 @@
                 loadingModal: false,
                 errores: [],
                 colores: [],
-                tallas: []
+                tallas: [],
+                rowPdf: [],
+                barcodeOptions: {
+                    displayValue: true,
+                    width: 1,
+                    format: "EAN13",
+                    height: 60,
+                    fontSize: 15,
+                    flat: true
+                },
+                margins: {
+                    top: 10,
+                    bottom: 10,
+                    left: 30,
+                    width: 522
+                }
             }
         },
         methods: {
+            dialogImprimir(row){
+                this.$dialog.prompt({
+                    message: `Cuántas etiquetas?`,
+                    inputAttrs: {
+                        type: 'number',
+                        placeholder: 'Cantidad',
+                        maxlength: 2,
+                        min: 1
+                    },
+                    onConfirm: (value) => this.generatePDF(row, value)
+                })
+            },
+            generatePDF(row, value){
+                this.rowPdf = []
+                for (let i = 0; i < value; i++) { 
+                    this.rowPdf.push(row)
+                }
+                this.$snackbar.open({
+                    duration: 5000,
+                    message: 'Se ha preparado el PDF, ahora lo puede descargar',
+                    type: 'is-warning',
+                    position: 'is-top',
+                    actionText: 'Descargar',
+                    indefinite: false,
+                    onAction: () => this.descargarPDF(row)
+                })
+            },
+            descargarPDF(row){
+                let pdfName = row.barcode + 'etiquetas'
+                const doc = new jsPDF({
+                    format: [612, 210]
+                });
+
+                doc.setFont('courier')
+
+                const contentHtml = this.$refs.etiquetas.innerHTML;
+                doc.fromHTML(contentHtml, 15, 10, {
+                    width: 522
+                }, function(dispose){
+                    doc.save(pdfName + '.pdf');
+                }, this.margins);
+            },
             nuevoClick(){
                 this.modalForm = true
                 this.addPieza.color_id = ''
@@ -336,6 +413,9 @@
         },
         props: {
             producto_id: {required:true}
+        },
+        components: {
+            'barcode': VueBarcode
         },
         mounted() {
             this.loadTabla()
