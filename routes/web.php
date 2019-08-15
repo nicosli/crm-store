@@ -28,4 +28,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/lista/productos', function(){
         return view('modulos.listas.productos');
     });
+    Route::get('/lista/piezas/{id}', function($id){
+        return view('modulos.listas.piezas', ['id' => $id]);
+    });
+    Route::get('/modulos/punto-de-venta', function(){
+        return view('modulos.puntoVenta');
+    });
 });

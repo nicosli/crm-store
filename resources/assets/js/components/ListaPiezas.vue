@@ -3,20 +3,15 @@
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/home">Home</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Lista Productos</a></li>
+            <li><a href="/lista/productos">Almacén</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Lista piezas</a></li>
         </ul>
     </nav>
     <div class="card">
         <div class="card-content">
-            <article class="message is-info">
-                <div class="message-body">Tabla de <strong>Productos</strong>.
-                    Este módulo muestra una lista completa de todas los productos
-                    que están dados de alta en el sistema
-                </div>
-            </article>
             <div class="columns">
                 <div class="column is-9-widescreen">
-                    <h3 class="subtitle m-t-sm">Lista de productos</h3>
+                    <h3 class="subtitle m-t-sm">Lista de piezas</h3>
                 </div>
                 <div class="column is-3-widescreen">
                     <b-input 
@@ -46,24 +41,29 @@
                 :default-sort-direction="defaultSortOrder"
                 :focusable=true>
                 <template slot-scope="props">
-                    <b-table-column field="nombre" label="Nombre" sortable>
-                        {{ props.row.nombre }}
+                    <b-table-column field="barcode" label="barcode" sortable>
+                        <label class="has-text-danger">
+                            {{ props.row.barcode }}
+                        </label>
                     </b-table-column>
-                    <b-table-column field="descripcion" label="Descripción" sortable>
-                        {{ props.row.descripcion | truncate(15) }}
+                    <b-table-column field="modelo" label="modelo" sortable>
+                        {{ props.row.producto.nombre }}
                     </b-table-column>
-                    <b-table-column field="costo" label="Costo" sortable>
-                        {{ props.row.costo | formatNumber() }}
+                    <b-table-column field="proveedor" label="proveedor" sortable>
+                        {{ props.row.producto.proveedor.nombre }}
                     </b-table-column>
-                    <b-table-column field="precio_publico" label="Precio Público" sortable>
-                        {{ props.row.precio_publico | formatNumber() }}
+                    <b-table-column field="talla" label="talla" sortable>
+                        {{ props.row.talla.nombre }}
                     </b-table-column>
-                    <b-table-column field="existencia" label="Existencia" sortable>
-                        {{ props.row.existencia }}
+                    <b-table-column field="color" label="color" sortable>
+                        {{ props.row.color.nombre }}
                     </b-table-column>
-                    <b-table-column field="" label="">
-                        <a :href="'/lista/piezas/'+props.row.id">Piezas</a>
+                    <b-table-column field="existencia" label="existencia" sortable>
+                        <label class="has-text-info">
+                            {{ props.row.existencia }}
+                        </label>
                     </b-table-column>
+                    
                     <b-table-column field="" label="">
                         <b-button type="is-info"
                             @click="editClick(props.row)"
@@ -87,88 +87,58 @@
     <b-modal :active.sync="modalForm" @close="closeModal()">
         <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
-                <p class="modal-card-title">Guardar nuevo Producto</p>
+                <p class="modal-card-title">Guardar nueva pieza</p>
             </header>
             <form v-on:submit.prevent="onSubmitControll">
             <section class="modal-card-body">
                 <b-message type="is-danger" v-show="errores.length > 0">
                     <label v-for="error in errores">{{error}}</label>
                 </b-message>
-                <b-field label="Nombre">
-                    <b-input 
-                        required
-                        :disabled="loadingModal"
-                        minlength="5"
-                        icon="shipping-fast"
-                        icon-pack="fas"
-                        placeholder="Nombre del producto"
-                        v-model="addProducto.nombre">
-                    </b-input>
-                </b-field>
-                <b-field label="Costo">
-                    <b-input 
-                        required
-                        :disabled="loadingModal"
-                        type="number"
-                        icon="phone"
-                        icon-pack="fas"
-                        placeholder="Costo neto"
-                        v-model="addProducto.costo">
-                    </b-input>
-                </b-field>
-                <b-field label="Precio Público">
-                    <b-input 
-                        required
-                        :disabled="loadingModal"
-                        type="number"
-                        icon="phone"
-                        icon-pack="fas"
-                        placeholder="Precio Público"
-                        v-model="addProducto.precio_publico">
-                    </b-input>
-                </b-field>
                 <div class="columns">
                     <div class="column">
-                        <b-field label="Categoria">
+                        <b-field label="Talla">
                             <b-select 
                                 expanded
-                                v-model="addProducto.categoria_id"
-                                placeholder="Selecciona una categoría">
+                                v-model="addPieza.talla_id"
+                                placeholder="Selecciona una talla">
                                 <option
-                                    v-for="categoria in categorias"
-                                    :value="categoria.id"
-                                    :key="categoria.id">
-                                    {{ categoria.nombre }}
+                                    v-for="talla in tallas"
+                                    :value="talla.id"
+                                    :key="talla.id">
+                                    {{ talla.nombre }}
                                 </option>
                             </b-select>
                         </b-field>
                     </div>
                     <div class="column">
-                        <b-field label="Proveedor">
+                        <b-field label="Color">
                             <b-select 
                                 expanded
-                                v-model="addProducto.proveedor_id"
-                                placeholder="Selecciona un proveedor">
+                                v-model="addPieza.color_id"
+                                placeholder="Selecciona un color">
                                 <option
-                                    v-for="proveedor in proveedores"
-                                    :value="proveedor.id"
-                                    :key="proveedor.id">
-                                    {{ proveedor.nombre }}
+                                    v-for="color in colores"
+                                    :value="color.id"
+                                    :key="color.id">
+                                    {{ color.nombre }}
                                 </option>
                             </b-select>
+                        </b-field>
+                    </div>
+                    <div class="column">
+                        <b-field label="Existencia">
+                            <b-input 
+                                required
+                                :disabled="loadingModal"
+                                type="numeric"
+                                icon="shipping-fast"
+                                icon-pack="fas"
+                                placeholder="Existencia"
+                                v-model="addPieza.existencia">
+                            </b-input>
                         </b-field>
                     </div>
                 </div>
-                <b-field label="Descripcción">
-                    <b-input
-                        required
-                        :disabled="loadingModal"
-                        type="textarea" 
-                        minlength="10"
-                        maxlength="150"
-                        v-model="addProducto.descripcion">
-                    </b-input>
-                </b-field>
             </section>
             <footer class="modal-card-foot">
                 <button class="button" 
@@ -197,48 +167,38 @@
                 searchKeyword: '',
 				perPage: 5,
                 modalForm: false,
-                addProducto: {
+                addPieza: {
                     id: '',
-                    nombre: '',
-                    costo: '',
-                    precio_publico: '',
-                    descripcion: '',
-                    categoria_id: '',
-                    proveedor_id: ''
+                    barcode: ''
                 },
                 loadingModal: false,
                 errores: [],
-                categorias: [],
                 colores: [],
-                proveedores: [],
                 tallas: []
             }
         },
         methods: {
             nuevoClick(){
                 this.modalForm = true
-                this.addProducto.nombre = ''
-                this.addProducto.costo = ''
-                this.addProducto.precio_publico = ''
-                this.addProducto.descripcion = ''
-                this.addProducto.categoria_id = ''
-                this.addProducto.proveedor_id = ''
-                this.addProducto.id = ''
+                this.addPieza.color_id = ''
+                this.addPieza.talla_id = ''
+                this.addPieza.existencia = ''
+                this.addPieza.producto_id = ''
+                this.addPieza.barcode = ''
                 this.errores = []
             },
             editClick(row){
                 this.errores = []
                 this.modalForm = true
-                this.addProducto = Object.assign({}, row)
+                this.addPieza = Object.assign({}, row)
             },
             deleteClick(row){
-                let message = 'Estás seguro de eliminar el producto '
-                            + '<b>'+row.nombre+'?</b>, se eliminará todos'
-                            + ' los productos registrados con este proveedor'
+                let message = 'Estás seguro de eliminar la pieza? '
+                            + '<b>'+row.barcode+'?</b>'
                 this.$dialog.confirm({
-                    title: 'Eliminar Producto',
+                    title: 'Eliminar pieza',
                     message: message,
-                    confirmText: 'Eliminar producto',
+                    confirmText: 'Eliminar pieza',
                     type: 'is-danger',
                     hasIcon: true,
                     onConfirm: () => this.deleteRow(row)
@@ -246,13 +206,13 @@
             },
             deleteRow(row){
                 this.$toast.open({
-                    message: 'Eiminando producto...',
+                    message: 'Eiminando pieza...',
                     type: 'is-danger',
                     duration: 1000
                 })
                 this.loadingModal = true
                 this.$http.delete(
-                    `http://local.store.nicosli.com/api/productos?id=`+row.id,
+                    `http://local.store.nicosli.com/api/piezas?id=`+row.id,
                 )
 				.then(( {data} ) => {
 					this.loadingModal = false
@@ -274,7 +234,7 @@
 				})
             },
             onSubmitControll(){
-                if(this.addProducto.id == '')
+                if(this.addPieza.id == '')
                     this.onSubmit()
                 else
                     this.onSubmitUpdate()
@@ -282,8 +242,8 @@
             onSubmitUpdate(){
                 this.loadingModal = true
                 this.$http.put(
-                    `http://local.store.nicosli.com/api/productos`, 
-                    this.addProducto, 
+                    `http://local.store.nicosli.com/api/piezas`, 
+                    this.addPieza, 
                     {emulateJSON:true}
                 )
 				.then(( {data} ) => {
@@ -291,9 +251,9 @@
                     if(data.error == false){
                         this.loadTabla()
                         this.modalForm = false
-                        this.searchKeyword = this.addProducto.nombre
+                        this.searchKeyword = this.addPieza.barcode
                         this.$toast.open({
-                            message: 'El producto se actulizó correctamente',
+                            message: 'La pieza se actulizó correctamente',
                             type: 'is-info',
                             duration: 4000
                         })
@@ -308,9 +268,10 @@
             },
             onSubmit(){
                 this.loadingModal = true
+                this.addPieza.producto_id = this.producto_id
                 this.$http.post(
-                    `http://local.store.nicosli.com/api/productos`, 
-                    this.addProducto, 
+                    `http://local.store.nicosli.com/api/piezas`, 
+                    this.addPieza, 
                     {emulateJSON:true}
                 )
 				.then(( {data} ) => {
@@ -318,7 +279,7 @@
                     if(data.error == false){
                         this.loadTabla()
                         this.modalForm = false
-                        this.searchKeyword = this.addProducto.nombre
+                        this.searchKeyword = this.addPieza.barcode
                         this.$toast.open({
                             message: 'El Producto se insertó correctamente',
                             type: 'is-success'
@@ -334,16 +295,14 @@
             },
             loadTabla() {
                 this.loading = true
-                this.$http.get(`http://local.store.nicosli.com/api/productos`)
+                this.$http.get(`http://local.store.nicosli.com/api/piezas?producto_id=`+this.producto_id)
 				.then(( {data} ) => {
 					this.loading = false
                     this.data = []
-                    data.results.forEach((item) => {
+                    data.result.forEach((item) => {
 						this.data.push(item)
                     })
-                    this.categorias = data.categorias
                     this.colores = data.colores
-                    this.proveedores = data.proveedores
                     this.tallas = data.tallas
 				})
 				.catch((error) => {
@@ -358,7 +317,7 @@
         computed: {
             filteredData(){
                 return this.data.filter((item) => {
-                    this.filtered = item.nombre.toLowerCase().includes(this.searchKeyword.toLowerCase())
+                    this.filtered = item.barcode.toLowerCase().includes(this.searchKeyword.toLowerCase())
 
                     return this.filtered
                 })
@@ -374,6 +333,9 @@
                     ? value.substr(0, length) + '...' 
                     : value 
             },
+        },
+        props: {
+            producto_id: {required:true}
         },
         mounted() {
             this.loadTabla()

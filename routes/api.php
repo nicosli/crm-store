@@ -25,4 +25,11 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/productos', 'API\productosController@setProducto');
     Route::put('/productos', 'API\productosController@updateProducto');
     Route::delete('/productos', 'API\productosController@deleteProducto');
+
+    Route::get('/piezas/{barcode}', 'API\puntoVentaController@getPieza');
+    
+    Route::get('/piezas', 'API\piezasController@getPiezas');
+    Route::post('/piezas', 'API\piezasController@setPieza');
+    Route::put('/piezas', 'API\piezasController@updatePieza');
+    Route::delete('/piezas', 'API\piezasController@deletePieza');
 });

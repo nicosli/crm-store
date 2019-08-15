@@ -11,11 +11,22 @@ class Piezas extends Model
     
     protected $table = "piezas";
     protected $dates = ['deleted_at'];
+    protected $fillable = array('nombre',
+        'producto_id',
+        'color_id',
+        'talla_id',
+        'existencia',
+        'barcode'
+    );
     
     public function color(){
     	return $this->belongsTo('App\Http\Models\Color');
     }
     public function talla(){
     	return $this->belongsTo('App\Http\Models\Talla');
+    }
+
+    public function producto(){
+        return $this->belongsTo('App\Http\Models\Producto');
     }
 }

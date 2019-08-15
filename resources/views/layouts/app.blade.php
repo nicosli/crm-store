@@ -37,6 +37,7 @@
                     </div>
                 </div>
                 <a class="navbar-item" href="{{asset('/lista/productos')}}">Almacén</a>
+                <a class="navbar-item" href="{{asset('/modulos/punto-de-venta')}}">Punto de venta</a>
             </div>
             @endif
 

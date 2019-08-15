@@ -22,6 +22,16 @@ Vue.component(
     require('./components/ListaProductos.vue')
 );
 
+Vue.component(
+    'lista-piezas',
+    require('./components/ListaPiezas.vue')
+);
+
+Vue.component(
+    'modulo-punto-venta',
+    require('./components/PuntoVenta.vue')
+);
+
 Vue.use(Buefy, {
     defaultIconPack: 'fa'
 })
