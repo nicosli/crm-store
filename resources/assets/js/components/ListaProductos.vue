@@ -84,7 +84,7 @@
             </b-table>
         </div>
     </div>
-    <b-modal :active.sync="modalForm" @close="closeModal()">
+    <b-modal :active.sync="modalForm">
         <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
                 <p class="modal-card-title">Guardar nuevo Producto</p>
@@ -171,8 +171,7 @@
                 </b-field>
             </section>
             <footer class="modal-card-foot">
-                <button class="button" 
-                    @click="closeModal()">Cerrar</button>
+                <a class="button" @click="modalForm=false">Cerrar</a>
                 <button class="button is-primary" type="submit" :disabled="loadingModal">
                     Guardar
                 </button>
