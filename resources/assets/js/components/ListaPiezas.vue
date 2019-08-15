@@ -198,7 +198,6 @@
                 barcodeOptions: {
                     displayValue: true,
                     width: 1,
-                    format: "EAN13",
                     height: 60,
                     fontSize: 15,
                     flat: true
@@ -288,7 +287,8 @@
                 })
                 this.loadingModal = true
                 this.$http.delete(
-                    `http://nekkyn.nicosli.com/api/piezas?id=`+row.id,
+                    this.appConfig.$api_url+
+                    `/api/piezas?id=`+row.id,
                 )
 				.then(( {data} ) => {
 					this.loadingModal = false
@@ -318,7 +318,8 @@
             onSubmitUpdate(){
                 this.loadingModal = true
                 this.$http.put(
-                    `http://nekkyn.nicosli.com/api/piezas`, 
+                    this.appConfig.$api_url+
+                    `/api/piezas`, 
                     this.addPieza, 
                     {emulateJSON:true}
                 )
@@ -346,7 +347,8 @@
                 this.loadingModal = true
                 this.addPieza.producto_id = this.producto_id
                 this.$http.post(
-                    `http://nekkyn.nicosli.com/api/piezas`, 
+                    this.appConfig.$api_url+
+                    `/api/piezas`, 
                     this.addPieza, 
                     {emulateJSON:true}
                 )
@@ -371,7 +373,7 @@
             },
             loadTabla() {
                 this.loading = true
-                this.$http.get(`http://nekkyn.nicosli.com/api/piezas?producto_id=`+this.producto_id)
+                this.$http.get(this.appConfig.$api_url+`/api/piezas?producto_id=`+this.producto_id)
 				.then(( {data} ) => {
 					this.loading = false
                     this.data = []

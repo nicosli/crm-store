@@ -9,17 +9,13 @@
     <div class="card">
         <div class="card-content">
             <form v-on:submit.prevent="searchProduct">
-            <b-field>
-                <b-input placeholder="código de barras..."
-                    :loading="loading"
-                    :disabled="loading"
-                    v-model="barcode"
-                    ref="barcode"
-                    type="search"
-                    icon-pack="fab"
-                    icon="searchengin">
-                </b-input>
-            </b-field>
+            <input 
+                class="input is-loading"
+                ref="barcode"
+                type="text" 
+                placeholder="Ingresar código de barras"
+                required
+                v-model="barcode">
             </form>
 
             <table class="m-t-md table is-responsive is-striped is-hoverable is-fullwidth" 
@@ -106,13 +102,14 @@
             },
             searchProduct(){
                 this.loading = true
-                this.$http.get(`http://nekkyn.nicosli.com/api/piezas/buscar/`+this.barcode)
+                this.$http.get(this.appConfig.$api_url+`/api/piezas/buscar/`+this.barcode)
 				.then(( {data} ) => {
 					this.loading = false
                     if(data.error == false){
                         this.carrito.push(data.result)
                         this.barcode = ''
                         this.calculaTotales()
+                        this.$refs.barcode.focus()
                     }else{
                         this.$toast.open({
                             message: 'No se encontró la pieza...',
@@ -148,7 +145,8 @@
             },
         },
         mounted() {
-
+            console.log(this.appConfig.$api_url)
+            this.$refs.barcode.focus()
         }
     }
 </script>
