@@ -171,7 +171,6 @@
     </div>
 </div>    
 </template>
-
 <script>
     import jsPDF from 'jspdf'
     import VueBarcode from '@chenfengyuan/vue-barcode';
