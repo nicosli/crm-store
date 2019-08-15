@@ -91,7 +91,7 @@
         data() {
             return {
                 loading: false,
-                barcode: '6192825058138',
+                barcode: '',
                 data: [],
                 carrito: [],
                 granTotal: 0
