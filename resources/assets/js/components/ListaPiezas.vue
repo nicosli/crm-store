@@ -329,6 +329,7 @@
                         this.loadTabla()
                         this.modalForm = false
                         this.searchKeyword = this.addPieza.barcode
+                        this.addPieza.id = ''
                         this.$toast.open({
                             message: 'La pieza se actulizó correctamente',
                             type: 'is-info',

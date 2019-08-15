@@ -255,6 +255,7 @@
                         this.loadTabla()
                         this.modalForm = false
                         this.searchKeyword = this.addProveedor.nombre
+                        this.addProveedor.id = ''
                         this.$toast.open({
                             message: 'El Proveedor se actualizó correctamente',
                             type: 'is-info',

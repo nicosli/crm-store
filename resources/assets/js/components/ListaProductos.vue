@@ -294,6 +294,7 @@
                         this.loadTabla()
                         this.modalForm = false
                         this.searchKeyword = this.addProducto.nombre
+                        this.addProducto.id = ''
                         this.$toast.open({
                             message: 'El producto se actulizó correctamente',
                             type: 'is-info',
