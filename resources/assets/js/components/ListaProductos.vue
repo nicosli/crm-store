@@ -252,7 +252,7 @@
                 })
                 this.loadingModal = true
                 this.$http.delete(
-                    `http://local.store.nicosli.com/api/productos?id=`+row.id,
+                    `http://nekkyn.nicosli.com/api/productos?id=`+row.id,
                 )
 				.then(( {data} ) => {
 					this.loadingModal = false
@@ -282,7 +282,7 @@
             onSubmitUpdate(){
                 this.loadingModal = true
                 this.$http.put(
-                    `http://local.store.nicosli.com/api/productos`, 
+                    `http://nekkyn.nicosli.com/api/productos`, 
                     this.addProducto, 
                     {emulateJSON:true}
                 )
@@ -309,7 +309,7 @@
             onSubmit(){
                 this.loadingModal = true
                 this.$http.post(
-                    `http://local.store.nicosli.com/api/productos`, 
+                    `http://nekkyn.nicosli.com/api/productos`, 
                     this.addProducto, 
                     {emulateJSON:true}
                 )
@@ -334,7 +334,7 @@
             },
             loadTabla() {
                 this.loading = true
-                this.$http.get(`http://local.store.nicosli.com/api/productos`)
+                this.$http.get(`http://nekkyn.nicosli.com/api/productos`)
 				.then(( {data} ) => {
 					this.loading = false
                     this.data = []

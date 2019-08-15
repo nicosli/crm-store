@@ -288,7 +288,7 @@
                 })
                 this.loadingModal = true
                 this.$http.delete(
-                    `http://local.store.nicosli.com/api/piezas?id=`+row.id,
+                    `http://nekkyn.nicosli.com/api/piezas?id=`+row.id,
                 )
 				.then(( {data} ) => {
 					this.loadingModal = false
@@ -318,7 +318,7 @@
             onSubmitUpdate(){
                 this.loadingModal = true
                 this.$http.put(
-                    `http://local.store.nicosli.com/api/piezas`, 
+                    `http://nekkyn.nicosli.com/api/piezas`, 
                     this.addPieza, 
                     {emulateJSON:true}
                 )
@@ -346,7 +346,7 @@
                 this.loadingModal = true
                 this.addPieza.producto_id = this.producto_id
                 this.$http.post(
-                    `http://local.store.nicosli.com/api/piezas`, 
+                    `http://nekkyn.nicosli.com/api/piezas`, 
                     this.addPieza, 
                     {emulateJSON:true}
                 )
@@ -371,7 +371,7 @@
             },
             loadTabla() {
                 this.loading = true
-                this.$http.get(`http://local.store.nicosli.com/api/piezas?producto_id=`+this.producto_id)
+                this.$http.get(`http://nekkyn.nicosli.com/api/piezas?producto_id=`+this.producto_id)
 				.then(( {data} ) => {
 					this.loading = false
                     this.data = []

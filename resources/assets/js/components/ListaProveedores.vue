@@ -216,7 +216,7 @@
                 })
                 this.loadingModal = true
                 this.$http.delete(
-                    `http://local.store.nicosli.com/api/proveedores?id=`+row.id,
+                    `http://nekkyn.nicosli.com/api/proveedores?id=`+row.id,
                 )
 				.then(( {data} ) => {
 					this.loadingModal = false
@@ -245,7 +245,7 @@
             onSubmitUpdate(){
                 this.loadingModal = true
                 this.$http.put(
-                    `http://local.store.nicosli.com/api/proveedores`, 
+                    `http://nekkyn.nicosli.com/api/proveedores`, 
                     this.addProveedor, 
                     {emulateJSON:true}
                 )
@@ -272,7 +272,7 @@
             onSubmit(){
                 this.loadingModal = true
                 this.$http.post(
-                    `http://local.store.nicosli.com/api/proveedores`, 
+                    `http://nekkyn.nicosli.com/api/proveedores`, 
                     this.addProveedor, 
                     {emulateJSON:true}
                 )
@@ -297,7 +297,7 @@
             },
             loadTabla() {
                 this.loading = true
-                this.$http.get(`http://local.store.nicosli.com/api/proveedores`)
+                this.$http.get(`http://nekkyn.nicosli.com/api/proveedores`)
 				.then(( {data} ) => {
 					this.loading = false
                     this.data = []
