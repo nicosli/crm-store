@@ -11,6 +11,13 @@
 |
 */
 
+Route::match(array('GET', 'POST'), '/project/update', function(){
+    $exitCode = Artisan::call('repo:update');
+    return response()->json([
+        'exitCode' => $exitCode
+    ]);
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
